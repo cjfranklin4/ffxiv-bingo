@@ -2,13 +2,31 @@ import './App.css';
 import {useEffect, useState} from 'react';
 
 function App() {
+  const [minions, setMinions] = useState([]);
   const [testArray, setTestArray] = useState([]);
   const [checked, setChecked] = useState([]);
   const [wins, setWins] = useState([0]);
 
   //use effect will grab array from API on page load
+
   useEffect(() => {
-    const bingoArray = ['tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile'];
+    const fetchPost = async () => {
+       const response = await fetch(
+          'https://dog.ceo/api/breeds/image/random/25'
+       );
+       const data = await response.json();
+       console.log(data.message);
+       setMinions(data.message);
+    };
+    fetchPost();
+ }, []);
+
+  useEffect(() => {
+    //building the bingo board array
+    //console.log(minions,'minions')
+    let bingoArray = [];
+    //const bingoArray = ['tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile'];
+    bingoArray = minions.map(minion =>minion);
     const numArray = []; 
 
     for(var i = 1; i <= 25; i++) {
@@ -18,13 +36,12 @@ function App() {
     let newArray2 = [];
 
     newArray2 = bingoArray.map( function(x, i){
-        return {"name": x, "status": false, 'id': numArray[i]}        
+      return {"name": x, "status": false, 'id': numArray[i]}        
     });
 
     setTestArray(newArray2);
                     
-    //console.log(newArray2);
-  }, []);
+  }, [minions]); //minions
 
   //
   /* const [testArray, setTestArray] = useState([
@@ -126,7 +143,8 @@ function App() {
           {/* {testArray.map((item) => (
             <Tile isActive={item.status} key={item.id} num={item.id} onToggle={() => handleToggle(item.id)}>
               {item.name}
-            </Tile>))} */}
+            </Tile>))}
+            */}
             {testArray.map(item => {
               return(
                 <Tile isActive={item.status} key={item.id} num={item.id} onToggle={() => handleToggle(item.id)}>
@@ -141,7 +159,9 @@ function App() {
     //function for each single bingo tile
     function Tile({isActive, children, onToggle}){
       return (
-        <div className={`block ${isActive ? "choose" : ""}`} onClick={onToggle}>{children}</div>
+        <div className={`block ${isActive ? "choose" : ""}`} onClick={onToggle}>
+          <img src={children} alt="mount"/>
+        </div>
       );
     }
   
@@ -155,7 +175,6 @@ function App() {
         <BingoBoard testArray={testArray}/> 
       </div>
       <button className="clear" onClick={() => handleReset()}>Reset Board</button>
-
     </div>
   );
 }
