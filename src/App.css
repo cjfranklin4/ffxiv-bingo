@@ -1,13 +1,13 @@
 .container{
   display: grid;
-  max-width:500px;
+  max-width:600px;
   grid-template-columns: repeat(5,auto);
   gap:5px;
 }
 .block{
-  width:100px;
+  /* width:100px;
   height:100px;
-  border:1px solid black;
+  border:1px solid black; */
   overflow: hidden;
 }
 

@@ -1,5 +1,7 @@
 import './App.css';
 import {useEffect, useState} from 'react';
+import { Box,Grid, GridItem, Button,Heading,Flex,useColorMode,useColorModeValue } from '@chakra-ui/react'
+import { SunIcon, MoonIcon } from '@chakra-ui/icons'
 
 function App() {
   const [minions, setMinions] = useState([]);
@@ -15,7 +17,7 @@ function App() {
           'https://dog.ceo/api/breeds/image/random/25'
        );
        const data = await response.json();
-       console.log(data.message);
+       //console.log(data.message);
        setMinions(data.message);
     };
     fetchPost();
@@ -41,14 +43,7 @@ function App() {
 
     setTestArray(newArray2);
                     
-  }, [minions]); //minions
-
-  //
-  /* const [testArray, setTestArray] = useState([
-    {name: 'tile',status: false, id: 0},{name: 'tile', status: false, id: 1},{name: 'tile',status: false, id: 2},{name: 'tile',status: false, id: 3},{name: 'tile',status: false, id: 4}
-    ]); */
-
-  //potential 
+  }, [minions]);
 
   const handleToggle = (koto) => {
     //console.log('working');
@@ -139,12 +134,11 @@ function App() {
   const BingoBoard = ({testArray}) =>{
     useWin(checked);
     return(
-      <div className="container">
-          {/* {testArray.map((item) => (
-            <Tile isActive={item.status} key={item.id} num={item.id} onToggle={() => handleToggle(item.id)}>
-              {item.name}
-            </Tile>))}
-            */}
+      <Grid
+        maxW='600px'
+        templateColumns='repeat(5, 1fr)'
+        gap={5}
+        >
             {testArray.map(item => {
               return(
                 <Tile isActive={item.status} key={item.id} num={item.id} onToggle={() => handleToggle(item.id)}>
@@ -152,30 +146,69 @@ function App() {
                 </Tile>
               )
             })}
-      </div>
+      </Grid>
     );
   }
 
     //function for each single bingo tile
     function Tile({isActive, children, onToggle}){
       return (
-        <div className={`block ${isActive ? "choose" : ""}`} onClick={onToggle}>
+        <GridItem 
+          //hrowSpan={1} 
+          colSpan={1}
+          w='100px'
+          h='100px'
+          borderWidth={`${isActive ? "5px" : "2px"}`} 
+          borderColor={`${isActive ? "orange.400" : 'teal' }`} 
+          //className={`block ${isActive ? "choose" : ""}`} 
+          onClick={onToggle}
+          borderRadius='5'
+          overflow='hidden'
+        >
           <img src={children} alt="mount"/>
-        </div>
+        </GridItem>
       );
     }
+
+    //Chakra UI things
+    const { colorMode, toggleColorMode } = useColorMode()
+    const bgGrad = useColorModeValue('linear(to-br,gray.100, gray.50)', 'linear(to-br, gray.800, gray.700, gray.800)')
   
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Bingo Board</h1>
-      </header>
-      {wins > 0 && <div className="bingo-win">Winner! You have {wins} bingo(s)!</div>}
-      <div className="board">
+    <Flex 
+      direction='column'
+      align='center'
+      bgGradient={bgGrad}
+      h='100vh'
+    >
+      <Flex 
+        direction='column'
+        align='center'
+      >
+        <Heading mt={5} mb={5}>FFXIV Mount Bingo</Heading>
+
+        <Button 
+          onClick={toggleColorMode}
+          colorScheme='teal' 
+          variant='solid' 
+          mb={5}
+          textAlign='center'
+        >
+        Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+
+        {colorMode === 'light' ? <MoonIcon ml={2}/>  : <SunIcon ml={2}/>}
+        </Button>
+      </Flex>
+      {wins > 0 && <Heading as='h2' mb={5} className="bingo-win">Winner! You have {wins} bingo(s)!</Heading>}
         <BingoBoard testArray={testArray}/> 
-      </div>
-      <button className="clear" onClick={() => handleReset()}>Reset Board</button>
-    </div>
+      <Button 
+        colorScheme='teal' 
+        variant='outline'
+        onClick={() => handleReset()}
+        mt={5} 
+        mb={5}
+      >Reset Board</Button>
+    </Flex>
   );
 }
 
