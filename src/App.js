@@ -1,6 +1,5 @@
-import './App.css';
 import {useEffect, useState} from 'react';
-import { Box,Grid, GridItem, Button,Heading,Flex,useColorMode,useColorModeValue } from '@chakra-ui/react'
+import {Grid, GridItem, Button,Heading,Flex,useColorMode,useColorModeValue } from '@chakra-ui/react'
 import { SunIcon, MoonIcon } from '@chakra-ui/icons'
 
 function App() {
