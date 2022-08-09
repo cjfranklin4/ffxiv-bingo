@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react';
-import {Grid, GridItem, Button,Heading,Flex,useColorMode,useColorModeValue } from '@chakra-ui/react'
-import { SunIcon, MoonIcon } from '@chakra-ui/icons'
+import {Grid, GridItem, Button,Heading,Flex,useColorMode,useColorModeValue,Box } from '@chakra-ui/react'
+import { Icon,SunIcon, MoonIcon } from '@chakra-ui/icons'
+import { BsGithub } from 'react-icons/bs'
 
 function App() {
   const [minions, setMinions] = useState([]);
@@ -9,25 +10,22 @@ function App() {
   const [wins, setWins] = useState([0]);
 
   //use effect will grab array from API on page load
-
   useEffect(() => {
     const fetchPost = async () => {
        const response = await fetch(
-          'https://dog.ceo/api/breeds/image/random/25'
+          'https://ffxivcollect.com/api/mounts?limit=25'
        );
        const data = await response.json();
-       //console.log(data.message);
-       setMinions(data.message);
+       //console.log(data.results);
+       setMinions(data.results);
     };
     fetchPost();
  }, []);
 
   useEffect(() => {
     //building the bingo board array
-    //console.log(minions,'minions')
     let bingoArray = [];
-    //const bingoArray = ['tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile','tile', 'tile', 'tile', 'tile', 'tile'];
-    bingoArray = minions.map(minion =>minion);
+    bingoArray = minions.map(minion =>minion.image);
     const numArray = []; 
 
     for(var i = 1; i <= 25; i++) {
@@ -153,13 +151,11 @@ function App() {
     function Tile({isActive, children, onToggle}){
       return (
         <GridItem 
-          //hrowSpan={1} 
           colSpan={1}
           w='100px'
           h='100px'
           borderWidth={`${isActive ? "5px" : "2px"}`} 
           borderColor={`${isActive ? "orange.400" : 'teal' }`} 
-          //className={`block ${isActive ? "choose" : ""}`} 
           onClick={onToggle}
           borderRadius='5'
           overflow='hidden'
@@ -207,6 +203,11 @@ function App() {
         mt={5} 
         mb={5}
       >Reset Board</Button>
+      <Box as='a' href='https://github.com/cjfranklin4/ffxiv-bingo'>
+        <Icon as={BsGithub} color='teal'  _hover={{
+          color: "teal.300",
+          }}/>
+      </Box>
     </Flex>
   );
 }
