@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/ffxiv-bingo/static/js/main.467ac7cd.js",
+    "index.html": "/ffxiv-bingo/index.html",
+    "main.467ac7cd.js.map": "/ffxiv-bingo/static/js/main.467ac7cd.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.467ac7cd.js"
+  ]
+}
